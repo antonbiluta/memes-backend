@@ -1,5 +1,5 @@
 # Используем образ OpenJDK для сборки приложения
-FROM openjdk:21-jdk-alpine AS builder
+FROM openjdk:17-jdk-alpine AS builder
 
 # Устанавливаем переменную среды для Gradle
 ENV GRADLE_USER_HOME=/home/gradle/cache
