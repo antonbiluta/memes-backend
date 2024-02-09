@@ -1,5 +1,5 @@
 # Используем образ OpenJDK для сборки приложения
-FROM openjdk:17-jdk-alpine AS builder
+FROM openjdk:23-jdk-slim AS builder
 
 # Устанавливаем переменную среды для Gradle
 ENV GRADLE_USER_HOME=/home/gradle/cache
@@ -12,7 +12,7 @@ WORKDIR /home/gradle/src
 RUN ./gradlew build --no-daemon
 
 # Используем образ OpenJDK для запуска приложения
-FROM openjdk:17-jdk-alpine
+FROM openjdk:23-jdk-slim
 
 # Копируем собранный JAR-файл из предыдущего образа в текущий образ
 COPY --from=builder /home/gradle/src/build/libs/*.jar /app/app.jar
