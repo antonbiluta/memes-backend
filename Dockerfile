@@ -12,7 +12,7 @@ WORKDIR /home/gradle/src
 RUN ./gradlew build --no-daemon
 
 # Используем образ OpenJDK для запуска приложения
-FROM adoptopenjdk/openjdk11:alpine-jre
+FROM openjdk:17-jdk-alpine
 
 # Копируем собранный JAR-файл из предыдущего образа в текущий образ
 COPY --from=builder /home/gradle/src/build/libs/*.jar /app/app.jar
