@@ -1,0 +1,34 @@
+kind: pipeline
+type: docker
+name: default
+
+trigger:
+  branch:
+    - master
+  event:
+    - deployment
+    - push
+
+steps:
+  - name: stop-previous-backend
+    image: docker
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    commands:
+      - docker stop memes-app-backend || true
+      - docker rm memes-app-backend || true
+
+  - name: build-and-deploy
+    image: docker
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    commands:
+      - docker build -t memes-backend-image .
+      - docker run -d -p 39004:8080 --name memes-app-backend memes-backend-image
+
+volumes:
+  - name: dockersock
+    host:
+      path: /var/run/docker.sock
