@@ -2,12 +2,15 @@ package ru.biluta.memes.service.persistence.repository
 
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
-import ru.biluta.memes.service.persistence.model.MemesApp
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
+import ru.biluta.memes.service.persistence.model.Memes
 
-interface MemesRepository : JpaRepository<MemesApp, Long> {
+interface MemesRepository : JpaRepository<Memes, Long> {
 
-    fun findByChatPrefixOrderByCreatedAtDesc(chatPrefix: String, pageable: Pageable): List<MemesApp>
+    fun findMemesByChatId(chatId: Long, pageable: Pageable): List<Memes>?
 
-    fun findByChatIdOrderByCreatedAtDesc(chatId: Long, pageable: Pageable): List<MemesApp>
+    @Query("SELECT m FROM Memes m JOIN m.chatSettings cs WHERE cs.chatPrefix = :chatPrefix ORDER BY m.createdAt DESC")
+    fun findMemesByChatPrefix(@Param("chatPrefix") chatPrefix: String, pageable: Pageable): List<Memes>?
 
 }

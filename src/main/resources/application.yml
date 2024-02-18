@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://192.168.0.70:5432/memesBot
+    username: biluta
+    password: In12ter&!
+    driver-class-name: org.postgresql.Driver
+
+  flyway:
+    baseline-on-migrate: true
+
+minio:
+  endpoint: https://minio-back.biluta.ru
+  secret-key: N37FPlPZyX6X34rnknwWDzDCZFooRujnzxJztOjN
+  access-key: Ft28nzWVU4N1SYnTdyAl
+  bucket-name: memes-bucket

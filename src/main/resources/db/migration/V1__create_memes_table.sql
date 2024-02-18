@@ -1,4 +1,4 @@
-create table if not exists memes (
+create table if not exists memes_app (
     id SERIAL PRIMARY KEY,
     chat_id BIGINT NOT NULL,
     user_id INT NOT NULL,

@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version "1.9.22"
     kotlin("plugin.spring") version "1.9.22"
     kotlin("plugin.jpa") version "1.9.22"
+    kotlin("kapt") version "1.9.22"
 }
 
 group = "ru.biluta"
@@ -20,13 +21,23 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springdoc:springdoc-openapi-ui:1.7.0")
+    // Spring
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.flywaydb:flyway-core")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
+    //
+    implementation("org.mapstruct:mapstruct:1.5.5.Final")
+    annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
+    implementation("org.mapstruct.extensions.spring:mapstruct-spring-extensions:1.1.1")
+    implementation("org.mapstruct.extensions.spring:mapstruct-spring-annotations:1.1.1")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.1")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.flywaydb:flyway-core")
+    // data base
+    implementation("io.minio:minio:8.2.2")
     runtimeOnly("org.postgresql:postgresql")
+    // tests
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
