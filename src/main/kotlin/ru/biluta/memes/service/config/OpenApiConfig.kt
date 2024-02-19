@@ -15,6 +15,7 @@ class OpenApiConfig{
                         .url("/")
                         .description("Default Server URL")
                 )
+                .servers(listOf(Server().url("/")))
                 .info(Info()
                         .title("MemesApp")
                         .description("API для работы с мемами")
