@@ -1,11 +1,12 @@
 package ru.biluta.memes.service.config.security
 
-import org.apache.catalina.webresources.TomcatURLStreamHandlerFactory.disable
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
@@ -16,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 class WebSecurityConfig {
 
     private val whiteList = arrayOf(
@@ -29,38 +31,24 @@ class WebSecurityConfig {
     @Order(1)
     @Bean
     fun apiUserFilterChain(http: HttpSecurity): SecurityFilterChain {
-        http
-                .securityMatcher("/api/users/**")
-                .authorizeHttpRequests { authz ->
-                    authz
-                            .anyRequest()
-                            .authenticated()
-                }
-                .httpBasic { }
-                .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
-                .csrf { disable() }
-                .cors { disable() }
-        return http.build()
-    }
-
-    @Order(5)
-    @Bean
-    fun apiFilterChain(http: HttpSecurity): SecurityFilterChain {
-        http
-                .authorizeHttpRequests { authz ->
-                    whiteList.forEach {url ->
-                        authz.requestMatchers(url).permitAll()
-                    }
-                }
-                .csrf { disable() }
-                .cors {  }
+        http.invoke {
+            authorizeRequests {
+                authorize("/admin/**", authenticated)
+                whiteList.forEach { url -> authorize(url, permitAll) }
+            }
+            httpBasic {  }
+            sessionManagement { sessionCreationPolicy = SessionCreationPolicy.STATELESS }
+            csrf { disable() }
+            cors { disable() }
+        }
         return http.build()
     }
 
     @Bean
-    fun users(): UserDetailsService {
+    fun userDetailsService(): UserDetailsService {
         val encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()
-        val admin: UserDetails = User.withUsername("admin")
+        val admin: UserDetails = User.builder()
+                .username("admin")
                 .password(encoder.encode("admin"))
                 .roles("ADMIN")
                 .build()

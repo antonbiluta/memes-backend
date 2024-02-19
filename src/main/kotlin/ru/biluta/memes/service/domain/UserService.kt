@@ -4,6 +4,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import ru.biluta.memes.service.domain.model.User
+import ru.biluta.memes.service.mapping.UserMapper.toData
 import ru.biluta.memes.service.mapping.UserMapper.toDomain
 import ru.biluta.memes.service.persistence.repository.UserRepository
 import ru.biluta.memes.service.rest.model.exception.NotFoundException
@@ -24,6 +25,12 @@ class UserService(
             throw NotFoundException("not.found", "Не найдено")
         }
         return result
+    }
+
+    @Transactional
+    fun saveUser(user: User): User {
+        val userForSave = user.toData()
+        return repository.save(userForSave).toDomain()
     }
 
 }

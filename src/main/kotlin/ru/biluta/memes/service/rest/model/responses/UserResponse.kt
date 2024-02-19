@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 data class UserResponse(
 
     @Schema(description = "Айди в базе")
-    val id: Long,
+    val id: Long?,
     @Schema(description = "Айди пользователя")
     val userId: Long,
     @Schema(description = "Логин")

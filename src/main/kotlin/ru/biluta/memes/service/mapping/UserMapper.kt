@@ -1,10 +1,30 @@
 package ru.biluta.memes.service.mapping
 
 import ru.biluta.memes.service.domain.model.User
+import ru.biluta.memes.service.rest.model.requests.UserRequest
 import ru.biluta.memes.service.rest.model.responses.UserResponse
 import ru.biluta.memes.service.persistence.model.User as UserData
 
 object UserMapper {
+
+    fun UserRequest.toDomain(): User {
+        return User(
+                id = null,
+                userId = this.userId,
+                username = this.username,
+                firstName = this.firstName,
+                lastName = this.lastName
+        )
+    }
+
+    fun User.toData(): UserData {
+        return UserData(
+                userId = this.userId,
+                username = this.username,
+                firstName = this.firstName,
+                lastName = this.lastName
+        )
+    }
 
     fun List<UserData>.toDomain(): List<User> {
         return this.map { it.toDomain() }

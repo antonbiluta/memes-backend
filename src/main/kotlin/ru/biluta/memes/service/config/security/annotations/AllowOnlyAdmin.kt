@@ -1,8 +1,9 @@
 package ru.biluta.memes.service.config.security.annotations
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import org.springframework.security.access.prepost.PreAuthorize
 
+@Target(AnnotationTarget.FUNCTION, AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-@Target(AnnotationTarget.FUNCTION)
-@SecurityRequirement(name = "adminBasic")
+@MustBeDocumented
+@PreAuthorize("hasRole('ADMIN')")
 annotation class AllowOnlyAdmin
