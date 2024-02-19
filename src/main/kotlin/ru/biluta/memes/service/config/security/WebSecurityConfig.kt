@@ -2,6 +2,7 @@ package ru.biluta.memes.service.config.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -27,6 +28,7 @@ class WebSecurityConfig {
             "/api/chat/**"
     )
 
+    @Order(1)
     @Bean
     fun apiFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.invoke {

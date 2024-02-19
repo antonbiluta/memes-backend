@@ -5,9 +5,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import ru.biluta.memes.service.domain.service.ChatSettingsService
@@ -31,12 +31,12 @@ class ChatSettingsController(
         return service.getChatSettingsByChat(chat).toApi()
     }
 
-    @PutMapping("/{chatId}/update", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PutMapping("/{chatId}/update", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE])
     @Operation(summary = "Обновить настройки чата")
     @ApiResponse(responseCode = "200")
     fun updateChatSettings(
         @PathVariable chatId: Long,
-        @ModelAttribute request: ChatEditRequest
+        @RequestBody request: ChatEditRequest
     ): ChatResponse {
         return service.updatePrefixById(chatId, request).toApi()
     }

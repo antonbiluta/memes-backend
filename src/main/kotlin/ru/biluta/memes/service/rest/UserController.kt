@@ -32,11 +32,11 @@ class UserController(
     }
 
     @AllowOnlyAdmin
-    @PostMapping(consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE])
+    @PostMapping(consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE])
     @Operation(summary = "Сохранить информацию о пользователе")
     @ApiResponse(responseCode = "200")
     fun saveUser(
-        @ModelAttribute request: UserRequest
+        @RequestBody request: UserRequest
     ): UserResponse {
         val user = request.toDomain()
         return service.saveUser(user).toResponse()

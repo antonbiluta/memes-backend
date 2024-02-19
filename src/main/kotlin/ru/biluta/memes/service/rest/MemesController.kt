@@ -6,9 +6,9 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -38,11 +38,11 @@ class MemesController(
         return info.map { it.toApi() }
     }
 
-    @PostMapping("/upload", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PostMapping("/upload", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE])
     @Operation(summary = "Загрузить мем")
     @ApiResponse(responseCode = "200")
     fun uploadMeme(
-        @ModelAttribute memInfo: MemInfoRequest,
+        @RequestBody memInfo: MemInfoRequest,
     ): ResponseEntity<String> {
         val fileInfo = service.saveMeme(memInfo.toDomain())
         return ResponseEntity.ok("Путь в хранилище: $fileInfo")
