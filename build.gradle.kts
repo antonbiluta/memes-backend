@@ -28,6 +28,8 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
     //
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    testImplementation("org.springframework.security:spring-security-test")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
     implementation("org.mapstruct.extensions.spring:mapstruct-spring-extensions:1.1.1")
     implementation("org.mapstruct.extensions.spring:mapstruct-spring-annotations:1.1.1")
