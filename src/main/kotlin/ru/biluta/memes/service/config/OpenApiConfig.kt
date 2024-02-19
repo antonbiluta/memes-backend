@@ -15,8 +15,10 @@ class OpenApiConfig{
                         .title("MemesApp")
                         .description("API для работы с мемами")
                 )
-                .servers(listOf(Server().url("/").description("Default Server URL"))
-        )
+                .addServersItem(Server()
+                        .url("/")
+                        .description("Default Server URL")
+                )
     }
 
     @Bean
