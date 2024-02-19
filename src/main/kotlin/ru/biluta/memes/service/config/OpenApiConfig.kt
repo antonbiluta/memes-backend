@@ -11,13 +11,13 @@ class OpenApiConfig{
     @Bean
     fun customOpenAPI(): OpenAPI {
         return OpenAPI()
-                .info(Info()
-                        .title("MemesApp")
-                        .description("API для работы с мемами")
-                )
                 .addServersItem(Server()
                         .url("/")
                         .description("Default Server URL")
+                )
+                .info(Info()
+                        .title("MemesApp")
+                        .description("API для работы с мемами")
                 )
     }
 
