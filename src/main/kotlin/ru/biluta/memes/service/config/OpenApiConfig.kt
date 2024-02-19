@@ -49,7 +49,7 @@ class OpenApiConfig{
     fun secureOperationCustomizer(): OperationCustomizer {
         return OperationCustomizer { operation, handlerMethod ->
             if (AnnotationUtils.findAnnotation(handlerMethod.method, AllowOnlyAdmin::class.java) != null) {
-                operation.addSecurityItem(SecurityRequirement().addList("adminBasic"))
+                operation.addSecurityItem(SecurityRequirement().addList(ADMIN_AUTH_KEY))
             }
             operation
         }
