@@ -11,10 +11,10 @@ class Memes(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Int? = null,
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "chat_id", nullable = false)
     var chatId: Long,
 
-    @Column(name = "chat_id", nullable = false)
+    @Column(name = "user_id", nullable = false)
     var userId: Long,
 
     @Column(name = "file_path", nullable = false)

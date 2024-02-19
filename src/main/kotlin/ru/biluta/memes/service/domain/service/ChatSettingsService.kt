@@ -1,4 +1,4 @@
-package ru.biluta.memes.service.domain
+package ru.biluta.memes.service.domain.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -8,6 +8,7 @@ import ru.biluta.memes.service.persistence.model.ChatSettings
 import ru.biluta.memes.service.persistence.repository.ChatSettingsRepository
 import ru.biluta.memes.service.rest.model.exception.NotFoundException
 import ru.biluta.memes.service.rest.model.requests.ChatEditRequest
+import ru.biluta.memes.service.utils.KotlinExtension.notEqualsAndExists
 import ru.biluta.memes.service.utils.StringExtension.isLong
 import ru.biluta.memes.service.utils.constants.Exceptions.CHAT_NOT_FOUND
 import ru.biluta.memes.service.utils.constants.Exceptions.CODE_CHAT_NOT_FOUND
@@ -28,6 +29,7 @@ class ChatSettingsService(
             ?: throw NotFoundException(CODE_CHAT_NOT_FOUND, CHAT_NOT_FOUND)
     }
 
+    @Transactional(readOnly = true)
     fun updatePrefixById(
         chatId: Long,
         request: ChatEditRequest
@@ -64,10 +66,6 @@ class ChatSettingsService(
             }
         }
         return flag
-    }
-
-    private fun <T> T.notEqualsAndExists(other: T): Boolean {
-        return this != null && this != other
     }
 
 }

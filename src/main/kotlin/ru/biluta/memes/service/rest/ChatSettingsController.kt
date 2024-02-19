@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import ru.biluta.memes.service.domain.ChatSettingsService
+import ru.biluta.memes.service.domain.service.ChatSettingsService
 import ru.biluta.memes.service.mapping.ChatMapper.toApi
 import ru.biluta.memes.service.rest.model.requests.ChatEditRequest
 import ru.biluta.memes.service.rest.model.responses.ChatResponse

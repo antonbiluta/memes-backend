@@ -7,13 +7,9 @@ import ru.biluta.memes.service.enums.ContentTypePath
 data class MemInfoRequest(
 
     @Schema(description = "айди пользователя")
-    val userId: Int,
+    val userId: Long,
     @Schema(description = "айди чата")
-    val chatId: Int,
-    @Schema(description = "логин пользователя")
-    val username: String?,
-    @Schema(description = "префикс чата")
-    val chatPrefix: String?,
+    val chatId: Long,
     @Schema(description = "файл")
     val file: MultipartFile,
     @Schema(description = "тип файла")
