@@ -8,6 +8,7 @@ plugins {
     kotlin("plugin.jpa") version "1.9.22"
     kotlin("kapt") version "1.9.22"
 }
+val springCloudVersion by extra("2023.0.0")
 
 group = "ru.biluta"
 version = "0.0.1-SNAPSHOT"
@@ -29,6 +30,7 @@ dependencies {
     //
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
     implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.cloud:spring-cloud-starter-config")
     testImplementation("org.springframework.security:spring-security-test")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
     implementation("org.mapstruct.extensions.spring:mapstruct-spring-extensions:1.1.1")
@@ -41,6 +43,11 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
     // tests
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
+    }
 }
 
 tasks.withType<KotlinCompile> {

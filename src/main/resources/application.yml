@@ -3,17 +3,26 @@ server:
   forward-headers-strategy: native
 
 spring:
+  application:
+    name: memesback
+  config:
+    import: configserver:http://192.168.0.70:39100
+
   datasource:
-    url: jdbc:postgresql://192.168.0.70:5432/memesBot
-    username: biluta
-    password: In12ter&!
+    url: ${DATABASE.URL}
+    username: ${DATABASE.USERNAME}
+    password: ${DATABASE.PASSWD}
     driver-class-name: org.postgresql.Driver
 
   flyway:
     baseline-on-migrate: true
 
 minio:
-  endpoint: https://minio-back.biluta.ru
-  secret-key: N37FPlPZyX6X34rnknwWDzDCZFooRujnzxJztOjN
-  access-key: Ft28nzWVU4N1SYnTdyAl
-  bucket-name: memes-bucket
+  endpoint: ${MINIO.URL}
+  secret-key: ${MINIO.SECRET_KEY}
+  access-key: ${MINIO.ACCESS_KEY}
+  bucket-name: ${MINIO.BUCKET}
+
+springdoc:
+  cache:
+    disabled: true

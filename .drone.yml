@@ -10,7 +10,16 @@ trigger:
     - push
 
 steps:
-  - name: stop-previous-backend
+
+  - name: build
+    image: docker
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    commands:
+      - docker build -t memes-backend-image .
+
+  - name: stop-previous
     image: docker
     volumes:
       - name: dockersock
@@ -19,13 +28,12 @@ steps:
       - docker stop memes-app-backend || true
       - docker rm memes-app-backend || true
 
-  - name: build-and-deploy
+  - name: deploy
     image: docker
     volumes:
       - name: dockersock
         path: /var/run/docker.sock
     commands:
-      - docker build -t memes-backend-image .
       - docker run -d -p 39004:8080 --network=memes-network --name memes-app-backend memes-backend-image
 
 volumes:
