@@ -26,8 +26,24 @@ class OpenApiConfig{
     @Bean
     fun memesServiceApi(): GroupedOpenApi {
         return GroupedOpenApi.builder()
-            .group("memes-service")
+            .group("Memes")
             .pathsToMatch("/api/memes/**")
             .build()
+    }
+
+    @Bean
+    fun userServiceApi(): GroupedOpenApi {
+        return GroupedOpenApi.builder()
+                .group("User")
+                .pathsToMatch("/api/users/**")
+                .build()
+    }
+
+    @Bean
+    fun chatServiceApi(): GroupedOpenApi {
+        return GroupedOpenApi.builder()
+                .group("Chat")
+                .pathsToMatch("/api/chat/**")
+                .build()
     }
 }
