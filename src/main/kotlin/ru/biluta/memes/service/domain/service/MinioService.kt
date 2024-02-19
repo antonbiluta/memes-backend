@@ -1,11 +1,11 @@
-package ru.biluta.memes.service.domain
+package ru.biluta.memes.service.domain.service
 
 import io.minio.GetObjectArgs
 import io.minio.MinioClient
 import io.minio.PutObjectArgs
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
-import ru.biluta.memes.service.config.MinioProperties
+import ru.biluta.memes.service.config.minio.MinioProperties
 import ru.biluta.memes.service.domain.model.MemInfo
 import ru.biluta.memes.service.utils.MinioExtension.getFilePath
 
@@ -29,9 +29,9 @@ class MinioService(
     }
 
     fun uploadFile(memInfo: MemInfo): String {
-        val file = memInfo.fileOrigin
+        val file = memInfo.fileOrigin!!
         val directory = memInfo.fileType!!.path
-        val args = getPutObjectArgs(file!!, directory)
+        val args = getPutObjectArgs(file, directory)
         val uploadedFile = minioClient.putObject(args)
         return uploadedFile.getFilePath()
     }

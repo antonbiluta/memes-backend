@@ -1,4 +1,4 @@
-package ru.biluta.memes.service.domain
+package ru.biluta.memes.service.domain.service
 
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -31,6 +31,13 @@ class UserService(
     fun saveUser(user: User): User {
         val userForSave = user.toData()
         return repository.save(userForSave).toDomain()
+    }
+
+    @Transactional
+    fun saveUsers(users: List<User>): List<User> {
+        val usersForSave = users.toData()
+        val result = repository.saveAll(usersForSave)
+        return result.toDomain()
     }
 
 }

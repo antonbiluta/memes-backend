@@ -6,9 +6,10 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import ru.biluta.memes.service.config.security.annotations.AllowOnlyAdmin
-import ru.biluta.memes.service.domain.UserService
-import ru.biluta.memes.service.mapping.UserMapper.toApi
+import ru.biluta.memes.service.domain.service.UserService
+import ru.biluta.memes.service.mapping.UserMapper.toResponses
 import ru.biluta.memes.service.mapping.UserMapper.toDomain
+import ru.biluta.memes.service.mapping.UserMapper.toResponse
 import ru.biluta.memes.service.rest.model.requests.UserRequest
 import ru.biluta.memes.service.rest.model.responses.UserResponse
 
@@ -27,7 +28,7 @@ class UserController(
             @RequestParam limit: Int?,
             @RequestParam offset: Int?
     ): List<UserResponse> {
-        return service.getUsers(limit, offset).toApi()
+        return service.getUsers(limit, offset).toResponses()
     }
 
     @AllowOnlyAdmin
@@ -37,7 +38,19 @@ class UserController(
     fun saveUser(
         @ModelAttribute request: UserRequest
     ): UserResponse {
-        return service.saveUser(request.toDomain()).toApi()
+        val user = request.toDomain()
+        return service.saveUser(user).toResponse()
+    }
+
+    @AllowOnlyAdmin
+    @PostMapping("/all")
+    @Operation(summary = "Сохранить список пользователей")
+    @ApiResponse(responseCode = "200")
+    fun saveUsers(
+        @RequestBody request: List<UserRequest>
+    ): List<UserResponse> {
+        val users = request.map { it.toDomain() }
+        return service.saveUsers(users).toResponses()
     }
 
 }

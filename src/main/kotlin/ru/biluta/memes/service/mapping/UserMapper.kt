@@ -17,6 +17,10 @@ object UserMapper {
         )
     }
 
+    fun List<User>.toData(): List<UserData> {
+        return this.map { it.toData() }
+    }
+
     fun User.toData(): UserData {
         return UserData(
                 userId = this.userId,
@@ -40,11 +44,11 @@ object UserMapper {
         )
     }
 
-    fun List<User>.toApi(): List<UserResponse> {
-        return this.map { it.toApi() }
+    fun List<User>.toResponses(): List<UserResponse> {
+        return this.map { it.toResponse() }
     }
 
-    fun User.toApi(): UserResponse {
+    fun User.toResponse(): UserResponse {
         return UserResponse(
             id = this.id,
             userId = this.userId,

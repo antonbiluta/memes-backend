@@ -14,12 +14,10 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.AnnotationUtils
 import ru.biluta.memes.service.config.security.annotations.AllowOnlyAdmin
+import ru.biluta.memes.service.utils.constants.Security.ADMIN_AUTH_KEY
 
 @Configuration
 class OpenApiConfig{
-
-    private val ADMIN_AUTH_KEY = "adminBasic"
-    private val adminPathsPrefix = "/api/admin"
 
     @Bean
     fun modelResolver(objectMapper: ObjectMapper): ModelResolver = ModelResolver(objectMapper)
@@ -39,15 +37,6 @@ class OpenApiConfig{
                 )
     }
 
-    fun secureOperationCustomizer(): OperationCustomizer {
-        return OperationCustomizer { operation, handlerMethod ->
-            if (AnnotationUtils.findAnnotation(handlerMethod.method, AllowOnlyAdmin::class.java) != null) {
-                operation.addSecurityItem(SecurityRequirement().addList("adminBasic"))
-            }
-            operation
-        }
-    }
-
     @Bean
     fun memesServiceApi(): GroupedOpenApi {
         return GroupedOpenApi.builder()
@@ -57,30 +46,19 @@ class OpenApiConfig{
             .build()
     }
 
+    fun secureOperationCustomizer(): OperationCustomizer {
+        return OperationCustomizer { operation, handlerMethod ->
+            if (AnnotationUtils.findAnnotation(handlerMethod.method, AllowOnlyAdmin::class.java) != null) {
+                operation.addSecurityItem(SecurityRequirement().addList("adminBasic"))
+            }
+            operation
+        }
+    }
+
     private fun adminSecurityScheme(): SecurityScheme {
         return SecurityScheme().type(SecurityScheme.Type.HTTP)
                 .`in`(SecurityScheme.In.HEADER)
                 .name("admin")
                 .scheme("basic")
     }
-
-//    private val openApiCustomizer = object : OpenApiCustomizer {
-//        override fun customise(openApi: OpenAPI) {
-//            val authKeysPathPrefix = mapOf(
-//                    "$adminPathsPrefix/**" to ADMIN_AUTH_KEY
-//            )
-//            openApi.paths.forEach { path ->
-//                authKeysPathPrefix.entries.forEach eachEntry@{ entry ->
-//                    val prefix = entry.key
-//                    val authKey = entry.value
-//                    if (path.key.startsWith(prefix)) {
-//                        path.value.readOperations().forEach { operation ->
-//                            operation.security = listOf(SecurityRequirement().addList(authKey))
-//                        }
-//                        return@eachEntry
-//                    }
-//                }
-//            }
-//        }
-//    }
 }

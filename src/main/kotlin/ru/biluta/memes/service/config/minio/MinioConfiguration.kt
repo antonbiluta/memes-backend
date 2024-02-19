@@ -1,4 +1,4 @@
-package ru.biluta.memes.service.config
+package ru.biluta.memes.service.config.minio
 
 import io.minio.MinioClient
 import org.springframework.context.annotation.Bean

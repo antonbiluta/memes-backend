@@ -1,4 +1,4 @@
-package ru.biluta.memes.service.config
+package ru.biluta.memes.service.config.minio
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
