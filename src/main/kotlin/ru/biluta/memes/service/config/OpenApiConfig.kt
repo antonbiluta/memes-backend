@@ -1,3 +1,5 @@
+package ru.biluta.memes.service.config
+
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.servers.Server
@@ -15,7 +17,6 @@ class OpenApiConfig{
                         .url("/")
                         .description("Default Server URL")
                 )
-                .servers(listOf(Server().url("/")))
                 .info(Info()
                         .title("MemesApp")
                         .description("API для работы с мемами")
