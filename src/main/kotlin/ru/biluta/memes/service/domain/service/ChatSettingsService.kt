@@ -29,7 +29,7 @@ class ChatSettingsService(
             ?: throw NotFoundException(CODE_CHAT_NOT_FOUND, CHAT_NOT_FOUND)
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     fun updatePrefixById(
         chatId: Long,
         request: ChatEditRequest
