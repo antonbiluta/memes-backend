@@ -33,7 +33,7 @@ class WebSecurityConfig {
     fun apiFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.invoke {
             authorizeRequests {
-                authorize("/admin/**", authenticated)
+                authorize("/api/admin/**", authenticated)
                 whiteList.forEach { url -> authorize(url, permitAll) }
             }
             httpBasic {  }

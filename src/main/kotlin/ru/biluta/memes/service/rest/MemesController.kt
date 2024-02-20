@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -13,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import ru.biluta.memes.service.domain.service.MemesService
-import ru.biluta.memes.service.mapping.MemMapper.toApi
+import ru.biluta.memes.service.mapping.MemMapper.toResponse
 import ru.biluta.memes.service.mapping.MemMapper.toDomain
-import ru.biluta.memes.service.rest.model.exception.NotFoundException
 import ru.biluta.memes.service.rest.model.requests.MemInfoRequest
 import ru.biluta.memes.service.rest.model.responses.MemInfoResponse
 
@@ -34,8 +32,7 @@ class MemesController(
         @RequestParam limit: Int
     ): List<MemInfoResponse> {
         val info = service.findMemesByChatPrefixWithLimit(chatPrefix, limit)
-            ?: throw NotFoundException("not.found", "Не найдено")
-        return info.map { it.toApi() }
+        return info.map { it.toResponse() }
     }
 
     @PostMapping("/upload", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
@@ -43,9 +40,9 @@ class MemesController(
     @ApiResponse(responseCode = "200")
     fun uploadMeme(
         @ModelAttribute memInfo: MemInfoRequest,
-    ): ResponseEntity<String> {
+    ): MemInfoResponse {
         val fileInfo = service.saveMeme(memInfo.toDomain())
-        return ResponseEntity.ok("Путь в хранилище: $fileInfo")
+        return fileInfo.toResponse()
     }
 
 }

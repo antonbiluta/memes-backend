@@ -25,8 +25,8 @@ class UserController(
     @Operation(summary = "Получить всех пользователей")
     @ApiResponse(responseCode = "200")
     fun getUsers(
-            @RequestParam limit: Int?,
-            @RequestParam offset: Int?
+        @RequestParam limit: Int?,
+        @RequestParam offset: Int?
     ): List<UserResponse> {
         return service.getUsers(limit, offset).toResponses()
     }

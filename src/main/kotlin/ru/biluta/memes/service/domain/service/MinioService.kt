@@ -3,6 +3,7 @@ package ru.biluta.memes.service.domain.service
 import io.minio.GetObjectArgs
 import io.minio.MinioClient
 import io.minio.PutObjectArgs
+import okio.ByteString.Companion.readByteString
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import ru.biluta.memes.service.config.minio.MinioProperties
@@ -15,25 +16,30 @@ class MinioService(
     private val properties: MinioProperties
 ) {
 
+    fun uploadFile(memInfo: MemInfo): String {
+        val args = getPutObjectArgs(memInfo)
+        val uploadedFile = minioClient.putObject(args)
+        return uploadedFile.getFilePath()
+    }
+
     fun getPutObjectArgs(
-        file: MultipartFile,
-        directory: String
+        memInfo: MemInfo
     ): PutObjectArgs {
-        val path = "memes/$directory/${file.resource.filename}"
+        val file = memInfo.fileOrigin!!
+        val chatDir = memInfo.chatId.toString()
+        val contentDir = memInfo.fileType!!
+        val fileName = getUniqueFileName(file, chatDir, contentDir.fileExtension)
+        val path = "memes/$chatDir/${contentDir.path}/$fileName"
         return PutObjectArgs.builder()
             .bucket(properties.bucketName)
             .`object`(path)
             .stream(file.resource.inputStream, file.size, -1)
             .contentType(file.contentType ?: "application/octet-stream")
+            .userMetadata(mapOf(
+                "owner id" to "${memInfo.chatId}",
+                "chat id" to "${memInfo.chatId}"
+            ))
             .build()
-    }
-
-    fun uploadFile(memInfo: MemInfo): String {
-        val file = memInfo.fileOrigin!!
-        val directory = memInfo.fileType!!.path
-        val args = getPutObjectArgs(file, directory)
-        val uploadedFile = minioClient.putObject(args)
-        return uploadedFile.getFilePath()
     }
 
     fun getFileFromStorage(
@@ -59,5 +65,14 @@ class MinioService(
             .build()
         val stream = minioClient.getObject(args)
         return stream.readBytes().also { stream.close() }
+    }
+
+    private fun getUniqueFileName(
+        file: MultipartFile,
+        chatDir: String,
+        fileExtension: String
+    ): String {
+        val fileBytes = file.inputStream.readByteString(30).hex()
+        return "$chatDir-$fileBytes-30$fileExtension"
     }
 }

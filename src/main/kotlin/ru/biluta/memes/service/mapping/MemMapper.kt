@@ -46,7 +46,7 @@ object MemMapper {
         )
     }
 
-    fun MemInfo.toApi(): MemInfoApi {
+    fun MemInfo.toResponse(): MemInfoApi {
         return MemInfoApi(
             userId = this.userId,
             chatId = this.chatId,

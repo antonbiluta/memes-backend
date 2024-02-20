@@ -2,12 +2,13 @@ package ru.biluta.memes.service.enums
 
 enum class ContentTypePath(
     val contentType: String,
-    val path: String
+    val path: String,
+    val fileExtension: String
 ) {
 
-    IMAGE("image", "image"),
-    GIF("image/gif", "gif"),
-    VIDEO("video", "video");
+    IMAGE("image", "image", ".jpg"),
+    GIF("video", "video", ".mp4"),
+    VIDEO("video", "video", ".mp4");
 
 
     companion object {
