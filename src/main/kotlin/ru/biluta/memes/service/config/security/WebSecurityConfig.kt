@@ -50,8 +50,8 @@ class WebSecurityConfig(
     fun userDetailsService(): UserDetailsService {
         val encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()
         val admin: UserDetails = User.builder()
-                .username(users.adminUser.username)
-                .password(encoder.encode(users.adminUser.password))
+                .username(users.admin.username)
+                .password(encoder.encode(users.admin.password))
                 .roles("ADMIN")
                 .build()
         return InMemoryUserDetailsManager(admin)
