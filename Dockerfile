@@ -5,10 +5,8 @@ FROM openjdk:23-jdk-slim AS builder
 ENV GRADLE_USER_HOME=/home/gradle/cache
 
 # Копируем исходный код приложения в образ
-COPY . /home/gradle/src
+COPY --chmod=777 . /home/gradle/src
 WORKDIR /home/gradle/src
-
-RUN chmod -x ./gradlew
 
 # Собираем приложение с помощью Gradle
 RUN ./gradlew build --no-daemon
