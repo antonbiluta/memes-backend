@@ -28,6 +28,11 @@ minio:
   access-key: ${MINIO.ACCESS_KEY}
   bucket-name: ${MINIO.BUCKET}
 
+users:
+  admin:
+    username: ${USERS.ADMIN.username}
+    password: ${USERS.ADMIN.password}
+
 springdoc:
   cache:
     disabled: true

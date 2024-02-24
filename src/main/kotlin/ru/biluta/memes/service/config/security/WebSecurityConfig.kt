@@ -18,7 +18,9 @@ import org.springframework.security.web.SecurityFilterChain
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
-class WebSecurityConfig {
+class WebSecurityConfig(
+    private val users: UsersProperties
+) {
 
     private val whiteList = arrayOf(
             "/v3/api-docs/**",
@@ -48,14 +50,10 @@ class WebSecurityConfig {
     fun userDetailsService(): UserDetailsService {
         val encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()
         val admin: UserDetails = User.builder()
-                .username("admin")
-                .password(encoder.encode("admin"))
+                .username(users.adminUser.username)
+                .password(encoder.encode(users.adminUser.password))
                 .roles("ADMIN")
                 .build()
-        val moderator: UserDetails = User.withUsername("moder")
-                .password(encoder.encode("moder"))
-                .roles("MODERATOR")
-                .build()
-        return InMemoryUserDetailsManager(admin, moderator)
+        return InMemoryUserDetailsManager(admin)
     }
 }
