@@ -8,7 +8,6 @@ ENV GRADLE_USER_HOME=/home/gradle/cache
 COPY --chmod=777 . /home/gradle/src
 WORKDIR /home/gradle/src
 
-RUN chmod +x ./gradlew
 # Собираем приложение с помощью Gradle
 RUN ./gradlew build --no-daemon
 
