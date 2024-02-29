@@ -7,19 +7,19 @@ import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CookieValue
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import ru.biluta.memes.service.config.security.annotations.AllowOnlyAdmin
 import java.util.*
 
 @RestController
-@RequestMapping("/api/admin/users")
-@Tag(name = "Users", description = "API для работы с пользователями")
+@RequestMapping("/api/admin/tests")
+@Tag(name = "Tests", description = "API для работы с пользователями")
 class TestController {
 
     @AllowOnlyAdmin
-    @GetMapping
+    @PostMapping
     @Operation(summary = "Получить всех пользователей")
     @ApiResponse(responseCode = "200")
     fun getUsers(
