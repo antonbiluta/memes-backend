@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import ru.biluta.memes.service.config.minio.MinioProperties
 import ru.biluta.memes.service.domain.model.MemInfo
+import ru.biluta.memes.service.enums.ContentTypePath
 import ru.biluta.memes.service.utils.MinioExtension.getFilePath
 
 @Service
@@ -18,6 +19,33 @@ class MinioService(
 
     fun uploadFile(memInfo: MemInfo): String {
         val args = getPutObjectArgs(memInfo)
+        val uploadedFile = minioClient.putObject(args)
+        return uploadedFile.getFilePath()
+    }
+
+    fun uploadTestFile(
+        file: ByteArray,
+        chatId: Long,
+        userId: Long,
+        contentDir: ContentTypePath
+    ): String {
+        val inputStream = file.inputStream()
+
+        val fileBytes = inputStream.readByteString(30).hex()
+        inputStream.reset()
+        val fileName = "$userId-$fileBytes-30${contentDir.fileExtension}"
+        val path = "memes/$chatId/${contentDir.path}/$fileName"
+
+        val args = PutObjectArgs.builder()
+            .bucket(properties.bucketName)
+            .`object`(path)
+            .stream(inputStream, file.size.toLong(), -1)
+            .contentType(contentDir.contentType)
+            .userMetadata(mapOf(
+                "ownerId" to "$chatId",
+                "chatId" to "$chatId"
+            ))
+            .build()
         val uploadedFile = minioClient.putObject(args)
         return uploadedFile.getFilePath()
     }
@@ -36,7 +64,7 @@ class MinioService(
             .stream(file.resource.inputStream, file.size, -1)
             .contentType(file.contentType ?: "application/octet-stream")
             .userMetadata(mapOf(
-                "owner id" to "${memInfo.chatId}",
+                "owner id" to "${memInfo.userId}",
                 "chat id" to "${memInfo.chatId}"
             ))
             .build()

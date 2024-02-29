@@ -6,9 +6,9 @@ enum class ContentTypePath(
     val fileExtension: String
 ) {
 
-    IMAGE("image", "image", ".jpg"),
-    GIF("video", "video", ".mp4"),
-    VIDEO("video", "video", ".mp4");
+    IMAGE("image/jpeg", "image", ".jpg"),
+    GIF("video/mp4", "video", ".mp4"),
+    VIDEO("video/mp4", "video", ".mp4");
 
 
     companion object {

@@ -20,7 +20,7 @@ class MemesApp (
     var author: String,
     var media: ByteArray,
     var chatPrefix: String,
-    var mediaType: String,
+    var mediaType: String?,
     var createdAt: LocalDateTime = LocalDateTime.now()
 
 )

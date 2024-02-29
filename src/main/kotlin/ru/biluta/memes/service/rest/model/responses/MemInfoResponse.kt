@@ -9,7 +9,9 @@ data class MemInfoResponse(
     val userId: Long,
     @Schema(description = "айди чата")
     val chatId: Long,
-    @Schema(description = "логин пользователя")
+    @Schema(description = "ссылка на пользователя")
+    val userLink: String,
+    @Schema(description = "отображаемое имя")
     val username: String?,
     @Schema(description = "префикс чата")
     val chatPrefix: String?,

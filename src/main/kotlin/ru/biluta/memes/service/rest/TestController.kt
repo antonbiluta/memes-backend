@@ -11,12 +11,26 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import ru.biluta.memes.service.config.security.annotations.AllowOnlyAdmin
+import ru.biluta.memes.service.domain.service.TestsService
 import java.util.*
 
 @RestController
 @RequestMapping("/api/admin/tests")
 @Tag(name = "Tests", description = "API для работы с пользователями")
-class TestController {
+class TestController(
+    private val testsService: TestsService
+) {
+
+    @AllowOnlyAdmin
+    @PostMapping("/index")
+    @Operation(summary = "Перенести информацию из старой таблицы в новую")
+    @ApiResponse(responseCode = "200")
+    fun reSaveBase(
+
+    ): ResponseEntity<String> {
+        testsService.indexOldTable()
+        return ResponseEntity.ok("YOP")
+    }
 
     @AllowOnlyAdmin
     @PostMapping

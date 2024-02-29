@@ -13,7 +13,11 @@ object MemMapper {
         return MemInfo(
             userId = this.userId,
             chatId = this.chatId,
-            username = null,
+            user = MemInfo.User(
+                firstName = null,
+                lastName = null,
+                username = null
+            ),
             chatPrefix = null,
             fileOrigin = this.file,
             filePath = null,
@@ -41,7 +45,11 @@ object MemMapper {
             chatPrefix = this.chatSettings?.chatPrefix,
             fileOrigin = null,
             file = null,
-            username = this.user?.username,
+            user = MemInfo.User(
+                firstName = this.user?.firstName,
+                lastName = this.user?.lastName,
+                username = this.user?.username
+            ),
             createdAt = this.createdAt
         )
     }
@@ -50,7 +58,8 @@ object MemMapper {
         return MemInfoApi(
             userId = this.userId,
             chatId = this.chatId,
-            username = this.username,
+            userLink = this.getLink(),
+            username = this.user.getPrimaryName(),
             chatPrefix = this.chatPrefix,
             fileByteArray = this.file,
             filePath = this.filePath,

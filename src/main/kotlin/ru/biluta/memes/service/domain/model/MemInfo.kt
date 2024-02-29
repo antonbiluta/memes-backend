@@ -8,7 +8,7 @@ data class MemInfo(
 
     val userId: Long,
     val chatId: Long,
-    val username: String?,
+    val user: User,
     val chatPrefix: String?,
     val fileOrigin: MultipartFile?,
     val file: ByteArray?,
@@ -16,4 +16,28 @@ data class MemInfo(
     val fileType: ContentTypePath?,
     val createdAt: LocalDateTime
 
-)
+) {
+    data class User(
+        val firstName: String?,
+        val lastName: String?,
+        val username: String?
+    ) {
+        fun getFullName(): String {
+            return "$firstName $lastName"
+        }
+
+        fun getPrimaryName(): String? {
+            return when (firstName != null || lastName != null) {
+                true -> getFullName()
+                else -> username
+            }
+        }
+    }
+
+    fun getLink(): String {
+        return when (user.username != null) {
+            true -> "https://t.me/${user.username}"
+            else -> "tg://user?id=$userId"
+        }
+    }
+}
