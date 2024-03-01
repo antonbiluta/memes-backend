@@ -64,8 +64,8 @@ class MinioService(
             .stream(file.resource.inputStream, file.size, -1)
             .contentType(file.contentType ?: "application/octet-stream")
             .userMetadata(mapOf(
-                "owner id" to "${memInfo.userId}",
-                "chat id" to "${memInfo.chatId}"
+                "ownerId" to "${memInfo.userId}",
+                "chatId" to "${memInfo.chatId}"
             ))
             .build()
     }
