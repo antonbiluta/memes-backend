@@ -10,6 +10,7 @@ import ru.biluta.memes.service.config.minio.MinioProperties
 import ru.biluta.memes.service.domain.model.MemInfo
 import ru.biluta.memes.service.enums.ContentTypePath
 import ru.biluta.memes.service.utils.MinioExtension.getFilePath
+import java.security.MessageDigest
 
 @Service
 class MinioService(
@@ -56,7 +57,7 @@ class MinioService(
         val file = memInfo.fileOrigin!!
         val chatDir = memInfo.chatId.toString()
         val contentDir = memInfo.fileType!!
-        val fileName = getUniqueFileName(file, chatDir, contentDir.fileExtension)
+        val fileName = getUniqueFileName(file, chatDir)
         val path = "memes/$chatDir/${contentDir.path}/$fileName"
         return PutObjectArgs.builder()
             .bucket(properties.bucketName)
@@ -98,9 +99,16 @@ class MinioService(
     private fun getUniqueFileName(
         file: MultipartFile,
         chatDir: String,
-        fileExtension: String
     ): String {
-        val fileBytes = file.inputStream.readByteString(30).hex()
-        return "$chatDir-$fileBytes-30$fileExtension"
+        val hash = generateHash(file.bytes)
+        return "$chatDir-$hash"
+    }
+
+    private fun generateHash(
+        content: ByteArray
+    ): String {
+        val digest = MessageDigest.getInstance("SHA-256")
+        val hashBytes = digest.digest(content)
+        return hashBytes.joinToString("") { "%02x".format(it) }
     }
 }
