@@ -28,6 +28,11 @@ minio:
   access-key: ${MINIO.ACCESS_KEY}
   bucket-name: ${MINIO.BUCKET}
 
+giphy:
+  active: ${GIPHY.ACTIVE}
+  url: https://api.giphy.com/v1/gifs/search
+  api-key: ${GIPHY.API-KEY}
+
 users:
   admin:
     username: ${USERS.ADMIN.username}
