@@ -20,10 +20,13 @@ class MemesService(
     @Transactional(readOnly = true)
     fun findMemesByChatPrefixWithLimit(
         chatPrefix: String,
+        userId: Long?,
         limit: Int
     ): List<MemInfo> {
-        val result = memesRepository.findMemesByChatPrefix(chatPrefix, limit.basePageable())
-            ?: throw NotFoundException(CODE_MEMES_NOT_FOUND, MEMES_NOT_FOUND)
+        val result = when (userId != null) {
+            true -> memesRepository.findMemesByChatPrefixAndUserId(chatPrefix, userId, limit.basePageable())
+            else -> memesRepository.findMemesByChatPrefix(chatPrefix, limit.basePageable())
+        } ?: throw NotFoundException(CODE_MEMES_NOT_FOUND, MEMES_NOT_FOUND)
         return result.map { it.toDomain() }
     }
 

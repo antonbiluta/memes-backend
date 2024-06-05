@@ -29,9 +29,10 @@ class MemesController(
     @ApiResponse(responseCode = "200")
     fun getLastMemes(
         @PathVariable chatPrefix: String,
+        @RequestParam userId: Long?,
         @RequestParam limit: Int
     ): List<MemInfoResponse> {
-        val info = service.findMemesByChatPrefixWithLimit(chatPrefix, limit)
+        val info = service.findMemesByChatPrefixWithLimit(chatPrefix, userId, limit)
         return info.map { it.toResponse() }
     }
 

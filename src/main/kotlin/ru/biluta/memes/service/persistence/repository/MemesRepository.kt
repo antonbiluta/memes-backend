@@ -13,4 +13,7 @@ interface MemesRepository : JpaRepository<Memes, Long> {
     @Query("SELECT m FROM Memes m JOIN m.chatSettings cs WHERE cs.chatPrefix = :chatPrefix ORDER BY m.createdAt DESC")
     fun findMemesByChatPrefix(@Param("chatPrefix") chatPrefix: String, pageable: Pageable): List<Memes>?
 
+    @Query("SELECT m FROM Memes m JOIN m.chatSettings cs WHERE cs.chatPrefix = :chatPrefix AND m.userId = :userId ORDER BY m.createdAt DESC")
+    fun findMemesByChatPrefixAndUserId(@Param("chatPrefix") chatPrefix: String, @Param("userId") userId: Long, pageable: Pageable): List<Memes>?
+
 }
