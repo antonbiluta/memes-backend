@@ -7,9 +7,9 @@ import okio.ByteString.Companion.readByteString
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import ru.biluta.memes.service.config.minio.MinioProperties
-import ru.biluta.memes.service.domain.model.MemInfo
+import ru.biluta.memes.service.domain.model.MediaInfo
 import ru.biluta.memes.service.enums.ContentTypePath
-import ru.biluta.memes.service.utils.MinioExtension.getFilePath
+import ru.biluta.memes.service.utils.MinioExtension.collectFilepath
 import java.security.MessageDigest
 
 @Service
@@ -18,10 +18,10 @@ class MinioService(
     private val properties: MinioProperties
 ) {
 
-    fun uploadFile(memInfo: MemInfo): String {
-        val args = getPutObjectArgs(memInfo)
+    fun uploadFile(mediaInfo: MediaInfo): String {
+        val args = getPutObjectArgs(mediaInfo)
         val uploadedFile = minioClient.putObject(args)
-        return uploadedFile.getFilePath()
+        return uploadedFile.collectFilepath()
     }
 
     fun uploadTestFile(
@@ -48,15 +48,15 @@ class MinioService(
             ))
             .build()
         val uploadedFile = minioClient.putObject(args)
-        return uploadedFile.getFilePath()
+        return uploadedFile.collectFilepath()
     }
 
     fun getPutObjectArgs(
-        memInfo: MemInfo
+        mediaInfo: MediaInfo
     ): PutObjectArgs {
-        val file = memInfo.fileOrigin!!
-        val chatDir = memInfo.chatId.toString()
-        val contentDir = memInfo.fileType!!
+        val file = mediaInfo.fileOrigin!!
+        val chatDir = mediaInfo.chatId.toString()
+        val contentDir = mediaInfo.fileType!!
         val fileName = getUniqueFileName(file, chatDir)
         val path = "memes/$chatDir/${contentDir.path}/$fileName"
         return PutObjectArgs.builder()
@@ -65,8 +65,8 @@ class MinioService(
             .stream(file.resource.inputStream, file.size, -1)
             .contentType(file.contentType ?: "application/octet-stream")
             .userMetadata(mapOf(
-                "ownerId" to "${memInfo.userId}",
-                "chatId" to "${memInfo.chatId}"
+                "ownerId" to "${mediaInfo.userId}",
+                "chatId" to "${mediaInfo.chatId}"
             ))
             .build()
     }

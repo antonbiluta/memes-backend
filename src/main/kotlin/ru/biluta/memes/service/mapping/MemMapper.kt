@@ -1,6 +1,6 @@
 package ru.biluta.memes.service.mapping
 
-import ru.biluta.memes.service.domain.model.MemInfo
+import ru.biluta.memes.service.domain.model.MediaInfo
 import ru.biluta.memes.service.enums.ContentTypePath
 import ru.biluta.memes.service.persistence.model.Memes
 import ru.biluta.memes.service.rest.model.requests.MemInfoRequest
@@ -9,11 +9,11 @@ import ru.biluta.memes.service.rest.model.responses.MemInfoResponse as MemInfoAp
 
 object MemMapper {
 
-    fun MemInfoRequest.toDomain(): MemInfo {
-        return MemInfo(
+    fun MemInfoRequest.toDomain(): MediaInfo {
+        return MediaInfo(
             userId = this.userId,
             chatId = this.chatId,
-            user = MemInfo.User(
+            user = MediaInfo.User(
                 firstName = null,
                 lastName = null,
                 username = null
@@ -27,7 +27,7 @@ object MemMapper {
         )
     }
 
-    fun MemInfo.toData(): Memes {
+    fun MediaInfo.toData(): Memes {
         return Memes(
             chatId = this.chatId,
             userId = this.userId,
@@ -36,8 +36,12 @@ object MemMapper {
         )
     }
 
-    fun Memes.toDomain(): MemInfo {
-        return MemInfo(
+    fun List<Memes>.toDomain(): List<MediaInfo> {
+        return map { it.toDomain() }
+    }
+
+    fun Memes.toDomain(): MediaInfo {
+        return MediaInfo(
             chatId = this.chatId,
             userId = this.userId,
             filePath = this.filePath,
@@ -45,7 +49,7 @@ object MemMapper {
             chatPrefix = this.chatSettings?.chatPrefix,
             fileOrigin = null,
             file = null,
-            user = MemInfo.User(
+            user = MediaInfo.User(
                 firstName = this.user?.firstName,
                 lastName = this.user?.lastName,
                 username = this.user?.username
@@ -54,7 +58,7 @@ object MemMapper {
         )
     }
 
-    fun MemInfo.toResponse(): MemInfoApi {
+    fun MediaInfo.toResponse(): MemInfoApi {
         return MemInfoApi(
             userId = this.userId,
             chatId = this.chatId,

@@ -4,7 +4,7 @@ object StringExtension {
 
     fun String.isLong(): Boolean {
         try {
-            this.toLong()
+            toLong()
             return true
         } catch(ex: Exception) {
             return false

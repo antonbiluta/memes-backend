@@ -12,6 +12,8 @@ service:
   port: 8080
 
 ingress:
+  path: /api
+  pathType: Prefix
   hosts:
     - mem.biluta.ru
 

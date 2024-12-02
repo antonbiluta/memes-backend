@@ -4,10 +4,7 @@ import io.minio.ObjectWriteResponse
 
 object MinioExtension {
 
-    fun ObjectWriteResponse.getFilePath(): String {
-        val bucket = this.bucket()
-        val pathInBucket = this.`object`()
-        return "$bucket/$pathInBucket"
-    }
+    fun ObjectWriteResponse.collectFilepath(): String =
+        "${this.bucket()}/${this.`object`()}"
 
 }
