@@ -25,16 +25,9 @@ class OpenApiConfig{
     @Bean
     fun customOpenAPI(): OpenAPI {
         return OpenAPI()
-                .info(Info()
-                        .title("MemesApp")
-                        .description("API для работы с мемами")
-                        .version("0.1-Beta"))
-                .addServersItem(Server()
-                        .url("/")
-                        .description("This server Memes-API"))
-                .components(Components()
-                        .addSecuritySchemes(ADMIN_AUTH_KEY, adminSecurityScheme())
-                )
+            .info(Info().title("MemesApp").description("API для работы с мемами").version("0.1-Beta"))
+            .addServersItem(Server().description("This server Memes-API"))
+            .components(Components().addSecuritySchemes(ADMIN_AUTH_KEY, adminSecurityScheme()))
     }
 
     @Bean
