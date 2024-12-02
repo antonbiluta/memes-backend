@@ -31,9 +31,9 @@ steps:
       <<: *docker_creds
       registry: harbor.biluta.ru
       repo: harbor.biluta.ru/office-memes/memes-service
-    tags:
-      - ${DRONE_BRANCH}-${DRONE_BUILD_NUMBER}
-      - ${DRONE_BRANCH}-latest
+      tags:
+        - ${DRONE_BRANCH}-${DRONE_BUILD_NUMBER}
+        - ${DRONE_BRANCH}-latest
 
   - name: deploy
     image: alpine/helm:3.5.4
