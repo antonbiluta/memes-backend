@@ -1,10 +1,10 @@
-FROM harbor.biluta.ru/base-images/eclipse-temurin:21-jdk-alpine AS builder
+FROM eclipse-temurin:21-jdk-alpine AS builder
 
 WORKDIR /app
 
 COPY . .
 
-RUN ./gradlew build --no-daemon
+RUN ./gradlew clean build --no-daemon
 
 FROM gcr.io/distroless/java21-debian12:nonroot
 
