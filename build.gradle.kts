@@ -8,7 +8,7 @@ plugins {
     kotlin("plugin.jpa") version "1.9.22"
     kotlin("kapt") version "1.9.22"
 }
-val springCloudVersion by extra("2023.0.0")
+val springCloudVersion by extra("2023.0.2")
 
 group = "ru.biluta"
 version = "0.0.1-SNAPSHOT"

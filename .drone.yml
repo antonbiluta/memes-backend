@@ -1,42 +1,48 @@
 kind: pipeline
-type: docker
-name: default
+type: kubernetes
+name: build-deploy-dev
 
 trigger:
   branch:
-    - master
+    - dev
   event:
-    - deployment
     - push
+    - custom
+
+globals:
+  - &docker_creds
+    username:
+      from_secret: registry_robot_name
+    password:
+      from_secret: registry_robot_token
+  - &kuber_creds
+    kubernetes_token:
+      from_secret: k3s_token
+    api_server:
+      from_secret: k3s_uri
+    namespace:
+      from_secret: app_namespace
 
 steps:
 
   - name: build
-    image: docker
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
-    commands:
-      - docker build -t memes-backend-image .
-
-  - name: stop-previous
-    image: docker
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
-    commands:
-      - docker stop memes-app-backend || true
-      - docker rm memes-app-backend || true
+    image: plugins/docker
+    settings:
+      <<: *docker_creds
+      registry: harbor.biluta.ru
+      repo: harbor.biluta.ru/office-memes/memes-service
+    tags:
+      - ${DRONE_BRANCH}-${DRONE_BUILD_NUMBER}
+      - ${DRONE_BRANCH}-latest
 
   - name: deploy
-    image: docker
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
+    image: alpine/helm:3.5.4
+    environment:
+      IMAGE_TAG: ${DRONE_BRANCH}-${DRONE_BUILD_NUMBER}
+      SERVICE_NAME: memes-service
+      REGISTRY_URL: harbor.biluta.ru
+      REGISTRY_PATH: office-memes
+      KUBE_NS: biluta-memes-dev
+      <<: *kuber_creds
     commands:
-      - docker run -d -p 39004:8080 --network=memes-network --name memes-app-backend memes-backend-image
-
-volumes:
-  - name: dockersock
-    host:
-      path: /var/run/docker.sock
+      - helm upgrade -i memes-service-${DRONE_BRANCH} helm --set image.tag=${DRONE_BRANCH}-${DRONE_BUILD_NUMBER} -f helm/values.${DRONE_BRANCH}.yaml -n biluta-memes-dev

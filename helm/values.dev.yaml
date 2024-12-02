@@ -1,0 +1,24 @@
+replicaCount: 1
+
+image:
+  repository: harbor.biluta.ru/office-memes/memes-service
+  tag: dev-latest
+  pullPolicy: Always
+
+activeProfile: default
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  hosts:
+    - mem.biluta.ru
+
+resources:
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+  requests:
+    cpu: "250m"
+    memory: "256Mi"
