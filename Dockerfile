@@ -1,18 +1,15 @@
-FROM openjdk:23-jdk-slim AS builder
-
-ENV GRADLE_USER_HOME=/home/gradle/cache
+FROM eclipse-temurin:21-jdk-alpine AS builder
 
 WORKDIR /app
 
-COPY --chmod=777 . /home/gradle/src
-WORKDIR /home/gradle/src
+COPY . .
 
-RUN ./gradlew build --no-daemon
+RUN ./gradlew clean build --no-daemon -x test
 
-FROM openjdk:23-jdk-slim
+FROM gcr.io/distroless/java21-debian12:nonroot
 
-COPY --from=builder /home/gradle/src/build/libs/*.jar /app/app.jar
+WORKDIR /app
 
 COPY --from=builder /app/build/libs/*.jar /app/app.jar
 
-CMD ["java", "-jar", "/app/app.jar"]
+CMD ["-jar", "/app/app.jar"]
