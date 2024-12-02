@@ -18,7 +18,7 @@ import ru.biluta.memes.service.rest.model.requests.MemInfoRequest
 import ru.biluta.memes.service.rest.model.responses.MemInfoResponse
 
 @RestController
-@RequestMapping("/api/memes")
+@RequestMapping("/memes")
 @Tag(name = "Memes", description = "API для работы с мемами")
 class MemesController(
     private val service: MediaService

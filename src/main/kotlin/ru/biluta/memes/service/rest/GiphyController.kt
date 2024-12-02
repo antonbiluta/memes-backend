@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 import ru.biluta.memes.service.domain.service.GiphyService
 
 @RestController
-@RequestMapping("/api/giphy")
+@RequestMapping("/giphy")
 class GiphyController(
     private val giphyService: GiphyService
 ) {
