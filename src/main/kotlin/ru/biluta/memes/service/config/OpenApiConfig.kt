@@ -34,7 +34,7 @@ class OpenApiConfig{
     fun memesServiceApi(): GroupedOpenApi {
         return GroupedOpenApi.builder()
             .group("Memes-Service")
-            .pathsToMatch("/api/**")
+            .pathsToMatch("/**")
             .addOperationCustomizer(secureOperationCustomizer())
             .build()
     }
