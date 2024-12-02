@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     id("org.springframework.boot") version "3.2.2"
@@ -44,10 +45,15 @@ dependencies {
     // tests
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
+
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
     }
+}
+
+tasks.withType<BootJar> {
+    layered {}
 }
 
 tasks.withType<KotlinCompile> {
