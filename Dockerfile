@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN ./gradlew clean build --no-daemon -x test
+RUN ./gradlew bootJar --no-daemon
 
 FROM gcr.io/distroless/java21-debian12:nonroot
 
