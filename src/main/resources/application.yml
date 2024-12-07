@@ -8,7 +8,7 @@ spring:
   application:
     name: memesback
   config:
-    import: configserver:http://config-server-dev:8888
+    import: configserver:http://config-server-dev.biluta-tech.svc.cluster.local:8888
 
   servlet:
     multipart:
