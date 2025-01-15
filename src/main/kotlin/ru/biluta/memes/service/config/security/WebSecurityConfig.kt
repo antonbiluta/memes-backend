@@ -26,8 +26,8 @@ class WebSecurityConfig(
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/swagger-ui.html",
-            "/api/memes/**",
-            "/api/chat/**"
+            "/memes/**",
+            "/chat/**"
     )
 
     @Order(1)
@@ -35,7 +35,7 @@ class WebSecurityConfig(
     fun apiFilterChain(http: HttpSecurity): SecurityFilterChain {
         http.invoke {
             authorizeRequests {
-                authorize("/api/admin/**", authenticated)
+                authorize("/admin/**", authenticated)
                 whiteList.forEach { url -> authorize(url, permitAll) }
             }
             httpBasic {  }

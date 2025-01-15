@@ -1,24 +1,15 @@
-# Используем образ OpenJDK для сборки приложения
-FROM openjdk:23-jdk-slim AS builder
+FROM eclipse-temurin:21-jdk-alpine AS builder
 
-# Устанавливаем переменную среды для Gradle
-ENV GRADLE_USER_HOME=/home/gradle/cache
+WORKDIR /app
 
-# Копируем исходный код приложения в образ
-COPY --chmod=777 . /home/gradle/src
-WORKDIR /home/gradle/src
+COPY . .
 
-# Собираем приложение с помощью Gradle
-RUN ./gradlew build --no-daemon
+RUN ./gradlew bootJar --no-daemon
 
-# Используем образ OpenJDK для запуска приложения
-FROM openjdk:23-jdk-slim
+FROM gcr.io/distroless/java21-debian12:nonroot
 
-# Копируем собранный JAR-файл из предыдущего образа в текущий образ
-COPY --from=builder /home/gradle/src/build/libs/*.jar /app/app.jar
+WORKDIR /app
 
-# Устанавливаем переменную среды для порта, на котором будет работать приложение
-ENV PORT=8080
+COPY --from=builder /app/build/libs/*.jar /app/app.jar
 
-# Выполняем команду для запуска приложения
-CMD ["java", "-jar", "/app/app.jar", "--server.port=${PORT}"]
+CMD ["-jar", "/app/app.jar"]

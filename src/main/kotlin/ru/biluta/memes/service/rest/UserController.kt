@@ -14,7 +14,7 @@ import ru.biluta.memes.service.rest.model.requests.UserRequest
 import ru.biluta.memes.service.rest.model.responses.UserResponse
 
 @RestController
-@RequestMapping("/api/admin/users")
+@RequestMapping("/admin/users")
 @Tag(name = "Users", description = "API для работы с пользователями")
 class UserController(
     private val service: UserService

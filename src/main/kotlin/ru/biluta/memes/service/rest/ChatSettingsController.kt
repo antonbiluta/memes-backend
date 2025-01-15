@@ -16,7 +16,7 @@ import ru.biluta.memes.service.rest.model.requests.ChatEditRequest
 import ru.biluta.memes.service.rest.model.responses.ChatResponse
 
 @RestController
-@RequestMapping("/api/chat")
+@RequestMapping("/chat")
 @Tag(name = "ChatSettings", description = "API для работы с настройками чата")
 class ChatSettingsController(
     private val service: ChatSettingsService

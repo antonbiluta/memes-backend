@@ -4,7 +4,7 @@ import org.springframework.web.multipart.MultipartFile
 import ru.biluta.memes.service.enums.ContentTypePath
 import java.time.LocalDateTime
 
-data class MemInfo(
+data class MediaInfo(
 
     val userId: Long,
     val chatId: Long,

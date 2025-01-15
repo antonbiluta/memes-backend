@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.core.jackson.ModelResolver
 import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI
+import io.swagger.v3.oas.models.info.Contact
 import io.swagger.v3.oas.models.info.Info
+import io.swagger.v3.oas.models.info.License
 import io.swagger.v3.oas.models.security.SecurityRequirement
 import io.swagger.v3.oas.models.security.SecurityScheme
 import io.swagger.v3.oas.models.servers.Server
@@ -25,23 +27,39 @@ class OpenApiConfig{
     @Bean
     fun customOpenAPI(): OpenAPI {
         return OpenAPI()
-                .info(Info()
-                        .title("MemesApp")
-                        .description("API для работы с мемами")
-                        .version("0.1-Beta"))
-                .addServersItem(Server()
-                        .url("/")
-                        .description("This server Memes-API"))
-                .components(Components()
-                        .addSecuritySchemes(ADMIN_AUTH_KEY, adminSecurityScheme())
-                )
+            .info(
+                Info()
+                    .title("Media[Memes]-Service API")
+                    .description("API для управления медиа")
+                    .version("0.1-Beta")
+                    .contact(
+                        Contact()
+                            .name("Author: Anton Biluta")
+                            .url("https://github.com/antonbiluta")
+                            .email("tosha@biluta.ru")
+                    )
+                    .license(
+                        License()
+                            .name("MIT License")
+                            .url("https://opensource.org/licenses/MIT")
+                    )
+            )
+            .addServersItem(
+                Server()
+                    .url("/api")
+                    .description("memes-service API")
+            )
+            .components(
+                Components()
+                    .addSecuritySchemes(ADMIN_AUTH_KEY, adminSecurityScheme())
+            )
     }
 
     @Bean
     fun memesServiceApi(): GroupedOpenApi {
         return GroupedOpenApi.builder()
             .group("Memes-Service")
-            .pathsToMatch("/api/**")
+            .pathsToMatch("/**")
             .addOperationCustomizer(secureOperationCustomizer())
             .build()
     }

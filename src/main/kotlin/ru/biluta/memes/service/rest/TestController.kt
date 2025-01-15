@@ -15,7 +15,7 @@ import ru.biluta.memes.service.domain.service.TestsService
 import java.util.*
 
 @RestController
-@RequestMapping("/api/admin/tests")
+@RequestMapping("/admin/tests")
 @Tag(name = "Tests", description = "API для работы с пользователями")
 class TestController(
     private val testsService: TestsService

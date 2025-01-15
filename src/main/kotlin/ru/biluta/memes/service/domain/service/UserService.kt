@@ -15,29 +15,18 @@ class UserService(
 ) {
 
     @Transactional(readOnly = true)
-    fun getUsers(limit: Int?, offset: Int?): List<User> {
-        val pageable = limit?.let { PageRequest.of(offset ?: 0, limit) }
-        val result = when (pageable != null) {
-            true -> repository.findAll(pageable).toList()
-            else -> repository.findAll()
-        }.toDomain()
-        if (result.isEmpty()) {
-            throw NotFoundException("not.found", "Не найдено")
+    fun getUsers(limit: Int?, offset: Int?): List<User> = when(limit != null) {
+        true -> {
+            val pageable = PageRequest.of(offset ?: 0, limit)
+            repository.findAll(pageable).toList()
         }
-        return result
-    }
+        else -> repository.findAll()
+    }.toDomain()
 
     @Transactional
-    fun saveUser(user: User): User {
-        val userForSave = user.toData()
-        return repository.save(userForSave).toDomain()
-    }
+    fun saveUser(user: User): User = repository.save(user.toData()).toDomain()
 
     @Transactional
-    fun saveUsers(users: List<User>): List<User> {
-        val usersForSave = users.toData()
-        val result = repository.saveAll(usersForSave)
-        return result.toDomain()
-    }
+    fun saveUsers(users: List<User>): List<User> = repository.saveAll(users.toData()).toDomain()
 
 }

@@ -1,12 +1,14 @@
 server:
   port: 8080
+  servlet:
+    context-path: /api
   forward-headers-strategy: native
 
 spring:
   application:
     name: memesback
   config:
-    import: configserver:http://192.168.0.70:39100
+    import: configserver:http://config-server-dev.biluta-tech.svc.cluster.local:8888
 
   servlet:
     multipart:
