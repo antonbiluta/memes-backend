@@ -46,4 +46,4 @@ jobs:
           helm upgrade -i memes-service-${{ github.ref_name }} helm \
             --set image.tag=${{ github.ref_name }}-${{ github.run_number }} \
             -f helm/values.${{ github.ref_name }}.yaml \
-            -n $KUBE_NS
+            -n ${{ vars.KUBE_NS }}
