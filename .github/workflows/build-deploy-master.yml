@@ -39,7 +39,7 @@ jobs:
               --set image.tag=${{ github.ref_name }}-${{ github.run_number }} \
               --set image.repository=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }} \
               -f helm/values.${{ github.ref_name }}.yaml \
-              -n ${{ vars.KUBE_NS }}
+              -n ${{ vars.KUBE_NS }} \
               --wait
           kubeconfig: '${{ secrets.KUBECONFIG }}'
           overrule_existing_kubeconfig: "true"
