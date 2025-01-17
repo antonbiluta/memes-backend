@@ -38,7 +38,7 @@ jobs:
             helm upgrade -i memes-service-${{ github.ref_name }} helm \
               --set image.tag=${{ github.ref_name }}-${{ github.run_number }} \
               --set image.repository=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
-              --values=helm/values.${{ github.ref_name }}.yaml \
+              --values=./helm/values.${{ github.ref_name }}.yaml \
               -n ${{ vars.KUBE_NS }} \
               --wait
           kubeconfig: '${{ secrets.KUBECONFIG }}'
