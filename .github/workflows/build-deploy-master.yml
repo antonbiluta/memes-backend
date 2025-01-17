@@ -30,19 +30,14 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
+      - uses: actions/checkout@v3
+      - name: Deploy
+        uses: WyriHaximus/github-action-helm3@v3
         with:
-          version: 'v1.24.0'
-
-      - name: Configure kubeconfig
-        run: |
-          echo "${{ secrets.K3S_TOKEN }}" | base64 --decode > /tmp/kubeconfig
-          export KUBECONFIG=/tmp/kubeconfig
-
-      - name: Deploy using Helm
-        run: |
-          helm upgrade -i memes-service-${{ github.ref_name }} helm \
-            --set image.tag=${{ github.ref_name }}-${{ github.run_number }} \
-            -f helm/values.${{ github.ref_name }}.yaml \
-            -n ${{ vars.KUBE_NS }}
+          exec: |
+            helm upgrade -i memes-service-${{ github.ref_name }} helm \
+              --set image.tag=${{ github.ref_name }}-${{ github.run_number }} \
+              -f helm/values.${{ github.ref_name }}.yaml \
+              -n ${{ vars.KUBE_NS }}
+          kubeconfig: echo "${{ secrets.K3S_TOKEN }}" | base64 --decode
+          overrule_existing_kubeconfig: "true"
