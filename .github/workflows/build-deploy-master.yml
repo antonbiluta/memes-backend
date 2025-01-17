@@ -21,10 +21,10 @@ jobs:
           CR_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo $CR_PAT | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          docker build -t ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.ref_name }} .
-          docker tag ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.ref_name }} ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest
-          docker push ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.ref_name }}
-          docker push ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest
+          docker build -t ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.ref_name }}-${{ github.run_number }} .
+          docker tag ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.ref_name }}-${{ github.run_number }} ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.ref_name }}-latest
+          docker push ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.ref_name }}-${{ github.run_number }}
+          docker push ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.ref_name }}-latest
 
   deploy:
     needs: build
@@ -37,7 +37,8 @@ jobs:
           exec: |
             helm upgrade -i memes-service-${{ github.ref_name }} helm \
               --set image.tag=${{ github.ref_name }}-${{ github.run_number }} \
+              --set image.repository=ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}
               -f helm/values.${{ github.ref_name }}.yaml \
               -n ${{ vars.KUBE_NS }}
-          kubeconfig: echo "${{ secrets.K3S_TOKEN }}" | base64 --decode
+          kubeconfig: '${{ secrets.KUBECONFIG }}'
           overrule_existing_kubeconfig: "true"
